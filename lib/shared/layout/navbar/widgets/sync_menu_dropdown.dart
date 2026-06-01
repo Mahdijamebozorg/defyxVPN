@@ -85,7 +85,9 @@ class _SyncMenuDropdownState extends ConsumerState<SyncMenuDropdown>
                       _rotationController.reset();
                     });
                   }
-                  await ref.read(flowlineServiceProvider).saveFlowline(offlineMode: false);
+                  await ref
+                      .read(flowlineServiceProvider)
+                      .saveFlowline(offlineMode: false);
                   ref
                       .read(settingsProvider.notifier)
                       .updateSettingsBasedOnFlowLine();
@@ -105,23 +107,19 @@ class _SyncMenuDropdownState extends ConsumerState<SyncMenuDropdown>
                 ),
                 icon: AppIcons.importAPI(width: 20, height: 20),
                 onTap: () {
-                  FilePicker.platform
-                      .pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['dfx'],
-                      )
-                      .then((result) async {
-                        if (result != null &&
-                            result.files.single.path != null) {
-                          ref
-                              .read(flowlineServiceProvider)
-                              .saveFlowline(
-                                offlineMode: true,
-                                flowLine: await result.xFiles.first
-                                    .readAsString(),
-                              );
-                        }
-                      });
+                  FilePicker.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: ['dfx'],
+                  ).then((result) async {
+                    if (result != null && result.files.single.path != null) {
+                      ref
+                          .read(flowlineServiceProvider)
+                          .saveFlowline(
+                            offlineMode: true,
+                            flowLine: await result.xFiles.first.readAsString(),
+                          );
+                    }
+                  });
                   _menuController.close();
                 },
               ),

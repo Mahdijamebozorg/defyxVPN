@@ -5,13 +5,13 @@ import 'package:defyx_vpn/shared/services/animation_service.dart';
 import 'package:defyx_vpn/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/settings_group.dart';
 import '../../models/settings_item.dart';
 import 'settings_item_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../shared/widgets/defyx_switch.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsGroupWidget extends ConsumerStatefulWidget {
   final SettingsGroup group;

@@ -123,7 +123,7 @@ class AdStrategyManager {
   /// Initialize connection state listener
   void _initializeConnectionListener() {
     debugPrint('🔔 AdStrategyManager - Registering connection listener');
-    debugPrint('   Environment: ${_environment}');
+    debugPrint('   Environment: $_environment');
 
     // Listen to connection changes and delegate to strategies
     _connectionSubscription = _ref.listen(conn.connectionStateProvider, (

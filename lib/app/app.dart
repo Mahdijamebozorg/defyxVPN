@@ -38,11 +38,11 @@ class _AppState extends ConsumerState<App> {
     // Single listener for ad readiness state changes
     ref.listen(adReadinessCoordinatorProvider, (previous, next) {
       if (previous == null) return;
-      
+
       // When canInitializeAdMob transitions to true, start the flow
       if (next.canInitializeAdMob && !previous.canInitializeAdMob) {
         debugPrint('🚀 Privacy accepted - starting ad initialization flow');
-        
+
         environmentAsync.whenData((environment) {
           if (environment.shouldInitializeAdMob) {
             _initializeAdFlow();
@@ -53,7 +53,7 @@ class _AppState extends ConsumerState<App> {
           }
         });
       }
-      
+
       // When consent completes and we're disconnected, retry ad load
       if (next.canLoadAds && !previous.canLoadAds) {
         final connectionState = ref.read(conn.connectionStateProvider).status;
@@ -70,10 +70,10 @@ class _AppState extends ConsumerState<App> {
       future: _initializeApp(),
       builder: (context, snapshot) {
         // Check ONCE if we need to initialize ads after app startup (e.g., after migration)
-        if (snapshot.connectionState == ConnectionState.done && 
+        if (snapshot.connectionState == ConnectionState.done &&
             !_hasCheckedInitialization) {
           _hasCheckedInitialization = true;
-          
+
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _checkAndInitializeAds(environmentAsync);
           });
@@ -92,11 +92,11 @@ class _AppState extends ConsumerState<App> {
   /// Check if ad initialization should happen (for migration/restart cases)
   void _checkAndInitializeAds(AsyncValue<AdEnvironment> environmentAsync) {
     final adReadiness = ref.read(adReadinessCoordinatorProvider);
-    
+
     // If canInitializeAdMob is already true (e.g., after migration), trigger flow
     if (adReadiness.canInitializeAdMob) {
       debugPrint('🔄 Ad initialization needed on startup (migration/restart)');
-      
+
       environmentAsync.whenData((environment) {
         if (environment.shouldInitializeAdMob) {
           _initializeAdFlow();
@@ -146,7 +146,7 @@ class _AppState extends ConsumerState<App> {
         designSize: designSize,
         minTextAdapt: true,
         splitScreenMode: true,
-        builder: (_, __) {
+        builder: (_, _) {
           return MaterialApp.router(
             title: 'Defyx',
             theme: AppTheme.lightTheme,

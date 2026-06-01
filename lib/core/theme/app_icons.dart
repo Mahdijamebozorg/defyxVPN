@@ -131,7 +131,7 @@ class AppIcons {
       alignment: Alignment.center,
       children: [
         SvgPicture.asset(shieldAnimePath, width: width, height: height),
-        if (children != null) ...children,
+        ...?children,
       ],
     );
   }

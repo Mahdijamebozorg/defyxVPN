@@ -18,16 +18,17 @@ plugins {
 android {
     namespace = "de.unboundtech.defyxvpn"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "29.0.13846066"
+    ndkVersion = flutter.ndkVersion  
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
+    // AGP +9 migration
+    // kotlinOptions {
+    //     jvmTarget = JavaVersion.VERSION_17.toString()
+    // }
     defaultConfig {
         applicationId = "de.unboundtech.defyxvpn"
         minSdk = flutter.minSdkVersion
@@ -49,8 +50,8 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             signingConfig =
                 if (keystorePropertiesFile.exists()) signingConfigs.getByName("release")
                 else signingConfigs.getByName("debug")
@@ -60,6 +61,32 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    // exclude some common metadata files that inflate APK size
+    packagingOptions {
+        jniLibs { useLegacyPackaging = true }
+        resources {
+            excludes +=
+                    setOf(
+                            "META-INF/*.kotlin_module",
+                            "META-INF/*.version",
+                            "META-INF/AL2.0",
+                            "META-INF/LGPL2.1",
+                            "META-INF/LICENSE*",
+                            "META-INF/NOTICE*",
+                            "META-INF/DEPENDENCIES",
+                            "META-INF/proguard/*",
+                            "META-INF/gradle/incremental.annotation.processors"
+                    )
+        }
+    }
+}
+
+// AGP +9 migration
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
 

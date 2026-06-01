@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:defyx_vpn/shared/models/ad_readiness_state.dart';
 import 'package:defyx_vpn/shared/services/ump_consent_cache.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';

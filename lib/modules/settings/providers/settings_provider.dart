@@ -4,6 +4,7 @@ import 'package:defyx_vpn/core/data/local/secure_storage/secure_storage_const.da
 import 'package:defyx_vpn/core/data/local/secure_storage/secure_storage_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../models/settings_item.dart';
 import '../models/settings_group.dart';
 import '../constants/settings_constants.dart';
@@ -36,7 +37,7 @@ class SettingsState {
 }
 
 class SettingsNotifier extends StateNotifier<SettingsState> {
-  final Ref<SettingsState> ref;
+  final Ref ref;
   ISecureStorage? _secureStorage;
   bool _isInitialized = false;
 

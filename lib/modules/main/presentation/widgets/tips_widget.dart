@@ -4,6 +4,7 @@ import 'package:defyx_vpn/shared/providers/hints_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final tipsCurrentPageProvider = StateProvider<int>((ref) => 0);
@@ -40,7 +41,7 @@ final tipsAutoAdvanceTimerProvider = Provider<Timer?>((ref) {
       return timer;
     },
     loading: () => null,
-    error: (_, __) => null,
+    error: (_, _) => null,
   );
 });
 
@@ -242,7 +243,7 @@ class TipsSlider extends ConsumerWidget {
         );
       },
       loading: () => const SizedBox.shrink(),
-      error: (_, __) => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
     );
   }
 }

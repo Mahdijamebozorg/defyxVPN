@@ -5,11 +5,11 @@
 ///
 /// The state is centralized here to ensure consistent behavior across
 /// all ad types while allowing the loading logic to vary via Strategy Pattern.
+library;
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:state_notifier/state_notifier.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Countdown duration in seconds before ad is hidden (industry standard for native ads)

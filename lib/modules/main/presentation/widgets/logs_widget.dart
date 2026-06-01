@@ -1,6 +1,7 @@
 import 'package:defyx_vpn/modules/core/log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:defyx_vpn/l10n/app_localizations.dart';
@@ -45,8 +46,9 @@ class LogsNotifier extends StateNotifier<LogsState> {
         List<String> newLogEntries = newLogs.split('\n');
 
         // Filter out empty lines and already shown logs
-        List<String> filteredNewLogs =
-            newLogEntries.where((log) => log.isNotEmpty && !_existingLogs.contains(log)).toList();
+        List<String> filteredNewLogs = newLogEntries
+            .where((log) => log.isNotEmpty && !_existingLogs.contains(log))
+            .toList();
 
         if (filteredNewLogs.isNotEmpty) {
           // Add new logs to the existing logs set to avoid duplicates
@@ -90,6 +92,14 @@ class LogsNotifier extends StateNotifier<LogsState> {
 
     // Clear logs in WarpPlus too and ensure clearUILogs is true since this is explicitly called to clear UI
     Log().clearLogs();
+  }
+
+  void setInitialLogs(List<String> filteredLogs) {
+    // If _existingLogs is a local list, update it here
+    _existingLogs.clear();
+    _existingLogs.addAll(filteredLogs);
+    // Update the state internally
+    state = state.copyWith(logs: filteredLogs);
   }
 
   // Check if the auto-refresh timer is active
@@ -174,12 +184,12 @@ class _LogPopupContentState extends ConsumerState<LogPopupContent> {
 
       if (allLogs.isNotEmpty) {
         List<String> logEntries = allLogs.split('\n');
-        List<String> filteredLogs = logEntries.where((log) => log.isNotEmpty).toList();
+        List<String> filteredLogs = logEntries
+            .where((log) => log.isNotEmpty)
+            .toList();
 
         if (filteredLogs.isNotEmpty) {
-          logsNotifier._existingLogs.clear();
-          logsNotifier._existingLogs.addAll(filteredLogs);
-          logsNotifier.state = logsNotifier.state.copyWith(logs: filteredLogs);
+          logsNotifier.setInitialLogs(filteredLogs);
         }
       }
 
@@ -274,7 +284,8 @@ class _LogPopupContentState extends ConsumerState<LogPopupContent> {
                       iconSize: 20,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
-                      onPressed: () => ref.read(logsProvider.notifier).fetchLogs(),
+                      onPressed: () =>
+                          ref.read(logsProvider.notifier).fetchLogs(),
                     ),
                   ],
                 ),
@@ -396,7 +407,7 @@ class _LogPopupContentState extends ConsumerState<LogPopupContent> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(AppLocalizations.of(context)!.close),
+                child: Text(AppLocalizations.of(context).close),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -405,7 +416,7 @@ class _LogPopupContentState extends ConsumerState<LogPopupContent> {
                   );
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(AppLocalizations.of(context)!.logsCopied),
+                      content: Text(AppLocalizations.of(context).logsCopied),
                       backgroundColor: const Color(0xFF2A2A2A),
                     ),
                   );
@@ -417,7 +428,7 @@ class _LogPopupContentState extends ConsumerState<LogPopupContent> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(AppLocalizations.of(context)!.copyLogs),
+                child: Text(AppLocalizations.of(context).copyLogs),
               ),
             ],
           ),
@@ -452,15 +463,12 @@ class _LogScreenState extends ConsumerState<LogScreen> {
         List<String> logEntries = allLogs.split('\n');
 
         // Filter out empty entries
-        List<String> filteredLogs = logEntries.where((log) => log.isNotEmpty).toList();
+        List<String> filteredLogs = logEntries
+            .where((log) => log.isNotEmpty)
+            .toList();
 
         if (filteredLogs.isNotEmpty) {
-          // Reset existing logs set to avoid duplicates with a fresh start
-          logsNotifier._existingLogs.clear();
-          logsNotifier._existingLogs.addAll(filteredLogs);
-
-          // Update the state with all logs
-          logsNotifier.state = logsNotifier.state.copyWith(logs: filteredLogs);
+          logsNotifier.setInitialLogs(filteredLogs);
         }
       }
 

@@ -123,7 +123,7 @@ class FlagIndicator extends ConsumerWidget {
         );
       },
       loading: _loadingFlag,
-      error: (_, __) => _errorFlag(),
+      error: (_, _) => _errorFlag(),
     );
   }
 

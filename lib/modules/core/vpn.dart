@@ -180,7 +180,7 @@ class VPN {
       // Get current VPN state for context
       final connectionState = _container?.read(connectionStateProvider);
       final vpnState = connectionState?.status.toString() ?? 'unknown';
-      final currentGroup = _container?.read(groupStateProvider)?.groupName;
+      final currentGroup = _container?.read(groupStateProvider).groupName;
 
       // Report to Crashlytics with VPN context
       crashReportingService.recordGoPanic(
@@ -279,7 +279,7 @@ class VPN {
     final connectionNotifier =
         _container?.read(connectionStateProvider.notifier);
     final settings = _container?.read(settingsProvider.notifier);
-    final currentGroup = _container?.read(groupStateProvider)?.groupName;
+    final currentGroup = _container?.read(groupStateProvider).groupName;
 
     connectionNotifier?.setError();
     await _vpnBridge.disconnectVpn();
